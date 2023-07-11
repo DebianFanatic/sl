@@ -15,7 +15,8 @@ fn main() {
     let image_vecvec = string_to_vecvecstrings(opts.image_string);
 
     display_image(image_vecvec);
-    
+
+	println!("Ta-daaaaa!");    
 } // end of main()
 
 fn get_options() -> Options {
