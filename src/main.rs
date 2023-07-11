@@ -1,33 +1,47 @@
 /* main.rs */
-/* Kent West, July 2023 */
 
-mod images;
 mod housekeeping;
+mod images;
 
-use images::*;
 use housekeeping::*;
+use images::*;
 
 fn main() {
-
-    // let kind = get_options();
     let opts: Options = get_options();
 
     let image_vecvec = string_to_vecvecstrings(opts.image_string);
 
     display_image(image_vecvec);
-
-	println!("Ta-daaaaa!");    
 } // end of main()
 
 fn get_options() -> Options {
     use clap::Parser; // Use c[ommand] l[ine] a[rgument] p[arser] to get command-line arguments.
 
+    // Set up program-arguments possibilities.
     #[derive(Parser)]
     struct Arguments {
-      kind: String,
-    }
-  
-    // The struct variable must be initialized; we're mostly using dummy values.
+        /// Which image to animate? D[51] | C[51] | L[ittle] | B[oat] | T[win[engine]] | P[lane] | M[otor[cycle]] | J[ack] | F[erris]
+        #[arg(long, short, default_value_t = String::from("D51"))]
+        kind: String,
+
+        /// Fly? If this switch is provided, the image will "fly".
+        #[arg(short, long, default_value_t = false)]
+        fly: bool,
+
+        /// Ctrl-c?
+        #[arg(short, long, default_value_t = false)]
+        breakable: bool,
+
+        /// Accident (only for some images)?
+        #[arg(short, long, default_value_t = false)]
+        accident: bool,
+
+        /// No trailer (only for D51 & C51 trains)?
+        #[arg(short, long, default_value_t = false)]
+        no_trailer: bool,
+    } // end of Arguments struct
+
+    // The Options struct variable must be initialized; we're mostly using dummy values.
     let mut cli_opts = Options {
         kind: String::from("D51"),
         image_string: String::from(""),
@@ -43,26 +57,24 @@ fn get_options() -> Options {
 
     // Get command-line arguments, if any.
     let args: Arguments = Arguments::parse();
- 
+
     let image_string = match args.kind.to_uppercase().as_str() {
-      "P" | "PLANE"                 =>  PLANE,
-      "D" | "D51"                   =>  D51,
-      "C" | "C51"                   =>  C51,
-      "L" | "LITTLE"                =>  LITTLE,
-      "B" | "BOAT"                  =>  BOAT,
-      "T" | "TWIN" | "TWINENGINE"   =>  TWINENGINE,
-      "M" | "MOTOR" | "MOTORCYCLE"  =>  MOTORCYCLE,        
-      "J" | "JACK"                  =>  JACK,
-      "F" | "FERRIS"                =>  FERRIS,
-      _                             =>  D51,
+        "P" | "PLANE" => PLANE,
+        "D" | "D51" => D51,
+        "C" | "C51" => C51,
+        "L" | "LITTLE" => LITTLE,
+        "B" | "BOAT" => BOAT,
+        "T" | "TWIN" | "TWINENGINE" => TWINENGINE,
+        "M" | "MOTOR" | "MOTORCYCLE" => MOTORCYCLE,
+        "J" | "JACK" => JACK,
+        "F" | "FERRIS" | "MASCOT" => FERRIS,
+        _ => D51,
     };
     cli_opts.image_string = image_string.to_string();
-
     return cli_opts;
 } // end of get_options()
 
 fn string_to_vecvecstrings(image_string: String) -> Vec<Vec<String>> {
-
     //The first character in the original const, after the 'r"', is a newline; lose it.
     let image_string = &image_string[1..image_string.len()];
 
@@ -88,7 +100,7 @@ fn string_to_vecvecstrings(image_string: String) -> Vec<Vec<String>> {
             // If a blank line is found...
             // ... we're done with the current vector, so create a new inner vector...
             outer_vec.push(Vec::new());
-            // ... and increase the count of vectors by one.            
+            // ... and increase the count of vectors by one.
             inner_vec_num += 1;
         }
     }
@@ -96,14 +108,13 @@ fn string_to_vecvecstrings(image_string: String) -> Vec<Vec<String>> {
     outer_vec
 } // end of string_to_vecvecstrings()
 
-
 fn display_image(image_vecvec: Vec<Vec<String>>) {
     let mut frame_num = 0;
     for each_frame in image_vecvec {
-      println!("Frame {}:", frame_num);
-      for each_line in each_frame {
-        println!("{}", each_line);
-      }
-    frame_num += 1;
+        println!("Frame {}:", frame_num);
+        for each_line in each_frame {
+            println!("{}", each_line);
+        }
+        frame_num += 1;
     }
 } // end of display_image()

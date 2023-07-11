@@ -1,3 +1,5 @@
+/* housekeeping.rs */
+
 pub struct Options {
     pub kind: String,
     pub image_string: String,
