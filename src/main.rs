@@ -1,5 +1,6 @@
 /* main.rs */
 
+mod convert_to_vec;
 mod display;
 mod get_opts;
 mod housekeeping;
