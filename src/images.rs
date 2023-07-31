@@ -389,7 +389,7 @@ _/   \_  '
 
 "; // end of JACK
 
-pub const COALCAR: &str = r"
+pub const _COALCAR: &str = r"
     _________________         
    _|                \_____A  
  =|                        |  
@@ -406,3 +406,10 @@ pub const FERRIS: &str = r"
     \'_   -   _'/  '
      | '-----' |   '
 "; // end of FERRIS
+
+// This is here only for testing UTF-8 capabilities (which currently fail).
+pub const _UTFEE: &str = r"
+程式设计
+
+✈
+"; // end of UTFEE
