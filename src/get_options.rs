@@ -1,6 +1,6 @@
 /* get_options.rs */
 
-pub fn get_opts() -> (String, bool) {
+pub fn get_opts() -> (String, bool, bool, bool) {
     use crate::images::*;
     use clap::Parser; // Use c[ommand] l[ine] a[rgument] p[arser] to get command-line arguments.
 
@@ -14,10 +14,20 @@ pub fn get_opts() -> (String, bool) {
         /// Should the model fly?
         #[arg(long, short, default_value_t = false)]
         fly: bool,
+
+        /// Accident?
+        #[arg(long, short, default_value_t = false)]
+        oops: bool,
+
+        /// Is the program-run interruptible?
+        #[arg(long, short, default_value_t = false)]
+        interruptible: bool,
     } // end of Arguments struct definition
 
+    // Get arguments from command-line, if any.
     let args: Arguments = Arguments::parse();
 
+    // Process "model" option.
     let image_str = match args.model.to_uppercase().as_str() {
         "P" | "PLANE" => PLANE,
         "D" | "D51" => D51,
@@ -31,6 +41,7 @@ pub fn get_opts() -> (String, bool) {
         _ => D51,
     };
 
+    // Process "fly" option.
     let mut fly: bool = false;
     if args.fly {
         fly = true;
@@ -38,5 +49,20 @@ pub fn get_opts() -> (String, bool) {
         fly = false;
     }
 
-    return (image_str.to_string(), fly);
+    // Process Accident ("oops") option.
+    let mut oops: bool = false;
+    if args.oops {
+        oops = true;
+    } else {
+        oops = false;
+    }
+
+    // Process "interruptible" option.
+    let mut interruptible: bool = false;
+    if args.interruptible {
+        interruptible = true;
+    } else {
+        interruptible = false;
+    }
+    return (image_str.to_string(), fly, oops, interruptible);
 } // end of get_options()
