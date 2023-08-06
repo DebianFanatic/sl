@@ -1,12 +1,11 @@
 /* display.rs */
 
-pub fn display_image(image_vecvec: Vec<Vec<String>>) {
-    let mut frame_num = 0;
-    for each_frame in image_vecvec {
-        println!("Frame {}:", frame_num);
-        for each_line in each_frame {
-            println!("{}", each_line);
-        }
-        frame_num += 1;
+use ncurses::*;
+
+pub fn draw_frame(frame: &Vec<String>, mut row: i32, mut col: i32) {
+    for each_line in frame {
+        mvaddstr(row, col, &each_line);
+        row += 1;
     }
-} // end of display_image()
+    refresh();
+} // end of draw_frame()

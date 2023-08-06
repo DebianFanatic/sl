@@ -23,8 +23,10 @@ pub fn str_to_vecvecstring(incoming_str: &str) -> Vec<Vec<String>> {
             if &each_line[each_line.len() - 1..] == "'" { // If end of line is a single-quote ...
                 each_line = &each_line[0..each_line.len() - 1]; // ... remove it.
             }
+            // Add an erasing space to the end of each line (converting it to a String from a &str).
+            let each_line = format!("{} ", each_line);
             // Now add the non-blank line to the current inner vector.
-            outer_vec[inner_vec_num].push(each_line.to_string());
+            outer_vec[inner_vec_num].push(each_line);
         } // Then move on to the next loop/line.
     }
     // Return the finished vector of String vectors.
